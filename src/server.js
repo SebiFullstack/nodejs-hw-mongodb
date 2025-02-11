@@ -31,7 +31,7 @@ export const startServer = () => {
     });
   });
 
-  app.get('/students/:studentId', async (req, res, next) => {
+  app.get('/students/:studentId', async (req, res) => {
     const { studentId } = req.params;
     const student = await getStudentById(studentId);
 
@@ -49,13 +49,13 @@ export const startServer = () => {
     });
   });
 
-  app.use('*', (req, res, next) => {
+  app.use('*', (req, res) => {
     res.status(404).json({
       message: 'Not found',
     });
   });
 
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     res.status(500).json({
       message: 'Something went wrong',
       error: err.message,

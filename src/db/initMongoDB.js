@@ -12,7 +12,7 @@ export const initMongoDB = async () => {
     const db = getEnvVar('MONGODB_DB');
 
     await mongoose.connect(
-      `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority&appName=Cluster1`,
+      `mongodb+srv://${user}:${pwd}@${url}/${db}?retryWrites=true&w=majority&appName=Students`
     );
     console.log('Mongo connection successfully established!');
   } catch (e) {
