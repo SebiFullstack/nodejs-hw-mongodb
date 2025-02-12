@@ -3,7 +3,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import { getAllStudents, getStudentById } from './services/students.js';
+import { getAllContacts, getContactById } from './services/students.js';
 
 import { getEnvVar } from './utils/getEnvVar.js';
 
@@ -24,16 +24,16 @@ export const startServer = () => {
   );
 
   app.get('/contacts', async (req, res) => {
-    const contacts = await getAllStudents();
+    const contacts = await getAllContacts();
 
     res.status(200).json({
       data: contacts,
     });
   });
 
-  app.get('/contacts/:studentId', async (req, res) => {
+  app.get('/contacts/:contactId', async (req, res) => {
     const { studentId } = req.params;
-    const student = await getStudentById(studentId);
+    const student = await getContactById(studentId);
 
     // Відповідь, якщо контакт не знайдено
     if (!student) {
