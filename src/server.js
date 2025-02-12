@@ -23,15 +23,15 @@ export const startServer = () => {
     }),
   );
 
-  app.get('/students', async (req, res) => {
-    const students = await getAllStudents();
+  app.get('/contacts', async (req, res) => {
+    const contacts = await getAllStudents();
 
     res.status(200).json({
-      data: students,
+      data: contacts,
     });
   });
 
-  app.get('/students/:studentId', async (req, res) => {
+  app.get('/contacts/:studentId', async (req, res) => {
     const { studentId } = req.params;
     const student = await getStudentById(studentId);
 
