@@ -4,6 +4,7 @@ import { getEnvVar } from '../utils/getEnvVar.js';
 export const initMongoConnection = async () => {
   try {
     const user = getEnvVar('MONGODB_USER');
+    console.log('user', user)
     const pwd = getEnvVar('MONGODB_PASSWORD');
     const url = getEnvVar('MONGODB_URL');
     const db = getEnvVar('MONGODB_DB');
