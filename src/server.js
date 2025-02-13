@@ -1,10 +1,7 @@
-// src/server.js
-
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import { getAllContacts, getContactById } from './services/students.js';
-
+import { getAllcontacts, getContactById } from './services/contacts.js';
 import { getEnvVar } from './utils/getEnvVar.js';
 
 const PORT = Number(getEnvVar('PORT', '3000'));
@@ -14,39 +11,46 @@ export const startServer = () => {
 
   app.use(express.json());
   app.use(cors());
-
   app.use(
     pino({
       transport: {
         target: 'pino-pretty',
       },
-    }),
+    })
   );
 
-  app.get('/contacts', async (req, res) => {
-    const contacts = await getAllContacts();
-
-    res.status(200).json({
-      data: contacts,
-    });
+  app.get('/contacts', async (req, res, next) => {
+    try {
+      const contacts = await getAllcontacts();
+      res.status(200).json({
+        status: 200,
+        message: 'Successfully found contacts!',
+        data: contacts,
+      });
+    } catch (err) {
+      next(err); 
+    }
   });
 
-  app.get('/contacts/:contactId', async (req, res) => {
-    const { studentId } = req.params;
-    const student = await getContactById(studentId);
+  app.get('/contacts/:contactId', async (req, res, next) => {
+    try {
+      const { contactId } = req.params;
+      const contact = await getContactById(contactId);
 
-    // Відповідь, якщо контакт не знайдено
-    if (!student) {
-      res.status(404).json({
-        message: 'Student not found',
+      if (!contact) {
+        return res.status(404).json({
+          message: 'Contact not found',
+        });
+      }
+
+      res.status(200).json({
+        status: 200,
+        message: `Successfully found contact with id ${contactId}!`,
+        data: contact,
       });
-      return;
+    } catch (err) {
+      next(err); 
     }
-
-    // Відповідь, якщо контакт знайдено
-    res.status(200).json({
-      data: student,
-    });
   });
 
   app.use('*', (req, res) => {
@@ -55,7 +59,8 @@ export const startServer = () => {
     });
   });
 
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
+    console.error(err);  
     res.status(500).json({
       message: 'Something went wrong',
       error: err.message,
