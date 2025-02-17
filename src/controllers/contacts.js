@@ -1,4 +1,3 @@
-// src/controllers/contacts.js
 import mongoose from 'mongoose';
 import {
   createContact,
@@ -8,9 +7,18 @@ import {
   updateContact,
 } from '../services/contacts.js';
 import createHttpError from 'http-errors';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const getContactsController = async (req, res) => {
-  const contacts = await getAllcontacts();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortOrder, sortBy } = parseSortParams(req.query);
+  const contacts = await getAllcontacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+  });
 
   res.status(200).json({
     status: 200,
@@ -22,7 +30,6 @@ export const getContactsController = async (req, res) => {
 export const getContactsByIdController = async (req, res) => {
   const { contactId } = req.params;
 
-  // Перевірка на валідність ObjectId
   if (!mongoose.Types.ObjectId.isValid(contactId)) {
     throw createHttpError(400, 'Invalid contact ID');
   }

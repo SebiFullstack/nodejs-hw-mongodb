@@ -7,7 +7,3 @@ export const ctrlWrapper = (controller) => {
     }
   };
 };
-
-export const getEnvVar = (varName, defaultValue) => {
-  return process.env[varName] || defaultValue;
-};
