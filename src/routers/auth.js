@@ -18,6 +18,12 @@ import { validateBody } from '../middlewares/validateBody.js';
 
 const router = Router();
 
+router.get('/', (req, res) => {
+  res.json({
+    message: 'auth router',
+  });
+});
+
 router.post(
   '/register',
   validateBody(registerUserSchema),
@@ -31,7 +37,6 @@ router.post(
 );
 
 router.post('/logout', ctrlWrapper(logoutUserController));
-
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
 router.post(

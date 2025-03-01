@@ -1,0 +1,15 @@
+type: object
+required:
+  - email
+  - password
+properties:
+  email:
+    type: string
+    format: email
+    description: User email address.
+    example: 'jconnor@skynet.mil'
+  password:
+    type: string
+    format: password
+    description: User password.
+    example: 'SecretPassword'
